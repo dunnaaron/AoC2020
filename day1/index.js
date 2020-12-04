@@ -8,20 +8,24 @@ const processEntries = () => (
 	.map(entry => parseInt(entry))
 );
 
-const calcResult = (entries, entry) => {
-	const index = entries.indexOf(2020 - entry);
+const calcResult = (entries, x, y) => {
+	const index = entries.indexOf(2020 - x - y);
 
-	return entry * entries[index];
+	return x * y * entries[index];
 }
 
 const fixExpenseReport = entries => {
 	let result = -1;
 	
-	for(let entry of entries) {
-		if(entries.indexOf(2020 - entry) > -1) {
-				result = calcResult(entries, entry);
-				break;
+	for(let x of entries) {
+		for(let y of entries) {
+			if (entries.indexOf(2020 - x - y) > -1) {
+				result = calcResult(entries, x, y);
+				break
+			}
 		}
+
+		if (result > -1) { break };
 	};
 
 	return result;
