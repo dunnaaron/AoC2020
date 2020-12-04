@@ -15,14 +15,17 @@ const debugPasswordDatabase = passwordsAndCriteria => {
 	let correctPasswords = []
 
 	passwordsAndCriteria.forEach(item => {
-		const minOccurance = parseInt(item.slice(0, item.indexOf('-')))
-		const maxOccurance = parseInt(item.slice(item.indexOf('-') + 1, item.indexOf(' ')))
+		const firstOccurance = parseInt(item.slice(0, item.indexOf('-')))
+		const lastOccurance = parseInt(item.slice(item.indexOf('-') + 1, item.indexOf(' ')))
 		const char = item.slice(item.indexOf(':') - 1, item.indexOf(':'))
 		const password = item.slice(item.indexOf(':') + 2)
 
-		const actualOccurances = calcOccurances(password, char)
+		const firstMatch = password[firstOccurance - 1] === char
+		const secondMatch = password[lastOccurance - 1] === char
 
-		if (actualOccurances <= maxOccurance && actualOccurances >= minOccurance) {
+		const actualOccurances =  (firstMatch || secondMatch) && (firstMatch !== secondMatch)
+
+		if (actualOccurances) {
 			correctPasswords.push(password)
 		}
 
